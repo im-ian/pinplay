@@ -30,7 +30,10 @@ fn mpv_arguments_encode_the_default_pip_window() {
     assert!(args.contains(&"--geometry=320x180-24-24".to_owned()));
     assert!(args.contains(&"--window-dragging=yes".to_owned()));
     assert!(args.contains(&"--auto-window-resize=no".to_owned()));
-    assert_eq!(&args[args.len() - 2..], ["--", "https://example.test/video"]);
+    assert_eq!(
+        &args[args.len() - 2..],
+        ["--", "https://example.test/video"]
+    );
 }
 
 #[test]
@@ -72,4 +75,3 @@ fn requested_playback_controls_map_to_mpv_without_shell_text() {
         &[PathBuf::from("/opt/homebrew/bin")]
     );
 }
-

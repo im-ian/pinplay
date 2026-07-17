@@ -8,13 +8,22 @@ use tempfile::NamedTempFile;
 fn size_presets_include_an_extremely_small_window() {
     assert_eq!(Size::from_str("nano").unwrap(), Size::new(96, 54).unwrap());
     assert_eq!(Size::from_str("tiny").unwrap(), Size::new(160, 90).unwrap());
-    assert_eq!(Size::from_str("small").unwrap(), Size::new(320, 180).unwrap());
-    assert_eq!(Size::from_str("medium").unwrap(), Size::new(480, 270).unwrap());
+    assert_eq!(
+        Size::from_str("small").unwrap(),
+        Size::new(320, 180).unwrap()
+    );
+    assert_eq!(
+        Size::from_str("medium").unwrap(),
+        Size::new(480, 270).unwrap()
+    );
 }
 
 #[test]
 fn custom_size_is_parsed_case_insensitively() {
-    assert_eq!(Size::from_str("240X135").unwrap(), Size::new(240, 135).unwrap());
+    assert_eq!(
+        Size::from_str("240X135").unwrap(),
+        Size::new(240, 135).unwrap()
+    );
 }
 
 #[test]
@@ -27,14 +36,20 @@ fn invalid_or_unreasonable_sizes_are_rejected() {
 #[test]
 fn start_time_accepts_mpv_time_formats() {
     for value in ["90", "1:30", "01:02:03.5", "25%", "#3", "-10"] {
-        assert!(StartTime::from_str(value).is_ok(), "{value} should be valid");
+        assert!(
+            StartTime::from_str(value).is_ok(),
+            "{value} should be valid"
+        );
     }
 }
 
 #[test]
 fn start_time_rejects_malformed_values() {
     for value in ["", "later", "1:60", "1:2:60", "101%", "#0", "1:2:3:4"] {
-        assert!(StartTime::from_str(value).is_err(), "{value} should be invalid");
+        assert!(
+            StartTime::from_str(value).is_err(),
+            "{value} should be invalid"
+        );
     }
 }
 
@@ -78,4 +93,3 @@ fn geometry_matches_each_supported_corner() {
     assert_eq!(Position::BottomLeft.geometry(size, 24), "320x180+24-24");
     assert_eq!(Position::BottomRight.geometry(size, 24), "320x180-24-24");
 }
-

@@ -106,4 +106,3 @@ fn invalid_numeric_options_are_rejected_by_clap() {
         assert!(Cli::try_parse_from(args).is_err());
     }
 }
-

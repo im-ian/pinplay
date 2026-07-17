@@ -54,7 +54,10 @@ fn exact_source_is_passed_after_an_option_delimiter() {
     let captured = fs::read_to_string(capture).unwrap();
     let args: Vec<_> = captured.lines().collect();
     assert_eq!(&args[args.len() - 2..], ["--", source.as_str()]);
-    assert!(!marker.exists(), "source text must never be executed by a shell");
+    assert!(
+        !marker.exists(),
+        "source text must never be executed by a shell"
+    );
 }
 
 #[test]
