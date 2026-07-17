@@ -77,3 +77,25 @@ fn requested_playback_controls_map_to_mpv_without_shell_text() {
         &[PathBuf::from("/opt/homebrew/bin")]
     );
 }
+
+#[test]
+fn helper_runtime_directories_are_added_to_the_child_path() {
+    let request = PlaybackRequest {
+        source: Source::parse(OsString::from("https://example.test/video")).unwrap(),
+        options: PlaybackOptions::default(),
+    };
+    let command = MpvCommand::with_helpers(
+        PathBuf::from("mpv"),
+        request,
+        Some(PathBuf::from("/opt/tools/yt/bin/yt-dlp")),
+        Some(PathBuf::from("/opt/tools/js/bin/deno")),
+    );
+
+    assert_eq!(
+        command.extra_path_entries(),
+        &[
+            PathBuf::from("/opt/tools/yt/bin"),
+            PathBuf::from("/opt/tools/js/bin")
+        ]
+    );
+}

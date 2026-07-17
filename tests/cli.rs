@@ -77,6 +77,26 @@ fn doctor_is_an_offline_subcommand() {
 }
 
 #[test]
+fn runtime_paths_include_the_javascript_runtime() {
+    let cli = Cli::try_parse_from([
+        "pinplay",
+        "--mpv",
+        "/tools/mpv",
+        "--yt-dlp",
+        "/tools/yt-dlp",
+        "--deno",
+        "/tools/deno",
+        "https://example.test/video",
+    ])
+    .unwrap();
+
+    let paths = cli.runtime_paths();
+    assert_eq!(paths.mpv, Some(PathBuf::from("/tools/mpv")));
+    assert_eq!(paths.yt_dlp, Some(PathBuf::from("/tools/yt-dlp")));
+    assert_eq!(paths.deno, Some(PathBuf::from("/tools/deno")));
+}
+
+#[test]
 fn a_file_named_doctor_can_be_played_with_an_explicit_path() {
     let file = NamedTempFile::new().unwrap();
     let cli = Cli::try_parse_from([
