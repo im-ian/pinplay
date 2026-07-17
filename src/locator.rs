@@ -80,13 +80,13 @@ fn find_on_path(name: &str) -> Option<PathBuf> {
 fn executable_candidates(directory: &Path, name: &str) -> Vec<PathBuf> {
     let base = directory.join(name);
     if base.extension().is_some() {
-        vec![base]
+        if has_safe_windows_executable_extension(&base) {
+            vec![base]
+        } else {
+            Vec::new()
+        }
     } else {
-        vec![
-            base.clone(),
-            base.with_extension("exe"),
-            base.with_extension("cmd"),
-        ]
+        vec![base.with_extension("exe")]
     }
 }
 
@@ -103,9 +103,21 @@ fn is_executable(path: &Path) -> bool {
         .is_ok_and(|metadata| metadata.is_file() && metadata.permissions().mode() & 0o111 != 0)
 }
 
-#[cfg(not(unix))]
+#[cfg(windows)]
+fn is_executable(path: &Path) -> bool {
+    path.is_file() && has_safe_windows_executable_extension(path)
+}
+
+#[cfg(all(not(unix), not(windows)))]
 fn is_executable(path: &Path) -> bool {
     path.is_file()
+}
+
+#[cfg(any(windows, test))]
+fn has_safe_windows_executable_extension(path: &Path) -> bool {
+    path.extension()
+        .and_then(|extension| extension.to_str())
+        .is_some_and(|extension| extension.eq_ignore_ascii_case("exe"))
 }
 
 fn canonical_or_original(path: PathBuf) -> PathBuf {

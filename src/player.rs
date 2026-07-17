@@ -59,6 +59,11 @@ impl MpvCommand {
         if options.loop_video {
             args.push("--loop-file=inf".into());
         }
+        if let Some(path) = &yt_dlp {
+            let mut option = OsString::from("--script-opts-append=ytdl_hook-ytdl_path=");
+            option.push(path.as_os_str());
+            args.push(option);
+        }
 
         #[cfg(target_os = "macos")]
         args.extend(["--focus-on=never".into(), "--on-all-workspaces".into()]);

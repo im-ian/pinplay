@@ -116,10 +116,11 @@ impl DoctorReport {
 fn dependency(tool: Tool, explicit: Option<&Path>, required: bool) -> DependencyReport {
     let path = locate(tool, explicit);
     let version = path.as_deref().and_then(read_version);
+    let found = version.is_some();
     DependencyReport {
         name: tool.name(),
         required,
-        found: path.is_some(),
+        found,
         path,
         version,
     }
