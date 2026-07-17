@@ -20,9 +20,14 @@ pub fn run(cli: Cli) -> Result<u8, AppError> {
             } else {
                 locate(Tool::YtDlp, None)
             };
+            let deno = if let Some(explicit) = runtime.deno.as_deref() {
+                Some(require(Tool::Deno, Some(explicit))?)
+            } else {
+                locate(Tool::Deno, None)
+            };
             let detach = request.options.detach;
             let dry_run = request.options.dry_run;
-            let command = MpvCommand::new(mpv, request, yt_dlp);
+            let command = MpvCommand::with_helpers(mpv, request, yt_dlp, deno);
             if dry_run {
                 println!("{}", command.display());
                 Ok(0)

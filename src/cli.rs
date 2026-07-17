@@ -78,6 +78,7 @@ impl Cli {
         RuntimePaths {
             mpv: self.mpv.clone(),
             yt_dlp: self.yt_dlp.clone(),
+            deno: self.deno.clone(),
         }
     }
 }
@@ -181,6 +182,7 @@ struct DoctorArgs {
 pub struct RuntimePaths {
     pub mpv: Option<PathBuf>,
     pub yt_dlp: Option<PathBuf>,
+    pub deno: Option<PathBuf>,
 }
 
 #[derive(Debug)]
