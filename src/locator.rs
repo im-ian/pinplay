@@ -55,7 +55,7 @@ pub fn locate(tool: Tool, explicit: Option<&Path>) -> Option<PathBuf> {
 }
 
 pub fn require(tool: Tool, explicit: Option<&Path>) -> Result<PathBuf, LocateError> {
-    locate(tool, explicit).ok_or_else(|| LocateError { tool })
+    locate(tool, explicit).ok_or(LocateError { tool })
 }
 
 fn locate_explicit(path: &Path) -> Option<PathBuf> {

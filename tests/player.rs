@@ -38,16 +38,18 @@ fn mpv_arguments_encode_the_default_pip_window() {
 
 #[test]
 fn requested_playback_controls_map_to_mpv_without_shell_text() {
-    let mut options = PlaybackOptions::default();
-    options.size = Size::new(240, 135).unwrap();
-    options.position = Position::TopLeft;
-    options.start = Some(StartTime::from_str("1:30").unwrap());
-    options.mute = true;
-    options.speed = pinplay::model::PlaybackSpeed::new(1.5).unwrap();
-    options.volume = Some(35);
-    options.loop_video = true;
-    options.border = true;
-    options.controls = true;
+    let options = PlaybackOptions {
+        size: Size::new(240, 135).unwrap(),
+        position: Position::TopLeft,
+        start: Some(StartTime::from_str("1:30").unwrap()),
+        mute: true,
+        speed: pinplay::model::PlaybackSpeed::new(1.5).unwrap(),
+        volume: Some(35),
+        loop_video: true,
+        border: true,
+        controls: true,
+        ..PlaybackOptions::default()
+    };
 
     let source = "https://example.test/video;touch /tmp/pinplay-must-not-exist";
     let request = PlaybackRequest {
