@@ -144,6 +144,11 @@ cargo fmt --all -- --check
 cargo clippy --all-targets --all-features -- -D warnings
 cargo test --all-targets --locked
 cargo build --release --locked
+
+# Homebrew cargo-llvm-cov를 설치한 경우
+LLVM_COV=/opt/homebrew/opt/llvm/bin/llvm-cov \
+LLVM_PROFDATA=/opt/homebrew/opt/llvm/bin/llvm-profdata \
+cargo llvm-cov --all-targets --locked --summary-only --fail-under-lines 80
 ```
 
 ## 라이선스
