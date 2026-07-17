@@ -49,8 +49,11 @@ impl DoctorReport {
         let ready = local_playback && web_playback;
 
         let mut hints = Vec::new();
-        if !mpv.found || !yt_dlp.found {
-            hints.push(install_hint());
+        if !mpv.found {
+            hints.push(mpv_install_hint());
+        }
+        if !yt_dlp.found {
+            hints.push(yt_dlp_install_hint());
         }
         Self {
             schema_version: 2,
@@ -138,13 +141,21 @@ fn sanitize_version(value: &str) -> String {
         .collect()
 }
 
-fn install_hint() -> String {
+fn mpv_install_hint() -> String {
     if cfg!(target_os = "macos") {
-        "Install dependencies with `brew install mpv yt-dlp`.".to_owned()
+        "Install mpv with `brew install mpv`.".to_owned()
     } else if cfg!(target_os = "windows") {
-        "Install mpv and yt-dlp, then make sure both are on PATH.".to_owned()
+        "Install mpv, then make sure it is on PATH.".to_owned()
     } else {
-        "Install mpv and yt-dlp with your system package manager.".to_owned()
+        "Install mpv with your system package manager.".to_owned()
+    }
+}
+
+fn yt_dlp_install_hint() -> String {
+    if cfg!(target_os = "macos") {
+        "Install yt-dlp separately: https://github.com/yt-dlp/yt-dlp/wiki/Installation.".to_owned()
+    } else {
+        "Install yt-dlp, then make sure it is on PATH.".to_owned()
     }
 }
 
