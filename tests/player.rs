@@ -99,7 +99,9 @@ fn only_the_yt_dlp_directory_is_added_to_the_child_path() {
         command.extra_path_entries(),
         &[PathBuf::from("/opt/tools/yt/bin")]
     );
-    assert!(!args_as_strings(&command)
-        .iter()
-        .any(|argument| argument.contains("js-runtimes")));
+    assert!(
+        !args_as_strings(&command)
+            .iter()
+            .any(|argument| argument.contains("js-runtimes"))
+    );
 }

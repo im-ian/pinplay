@@ -14,14 +14,25 @@ pinplay "./movie file.mkv" --size 240x135 --position top-left
 
 - [mpv](https://mpv.io/) — 영상 재생과 floating window
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) — YouTube 등 웹사이트 주소 처리
-- 최신 YouTube 지원을 위한 JavaScript runtime. Homebrew의 yt-dlp 설치 시
-  Deno가 함께 설치됩니다.
 
-macOS에서는 다음 명령으로 설치할 수 있습니다.
+Pinplay 자체는 Deno를 포함한 특정 JavaScript runtime을 설치, 탐색, 검사 또는
+구성하지 않습니다. 최신 yt-dlp의 완전한 YouTube 지원에는 별도의
+[지원 runtime과 EJS 구성](https://github.com/yt-dlp/yt-dlp/wiki/EJS)이 필요할 수
+있으며, 이는 yt-dlp 환경에서 선택적으로 관리합니다. runtime이 없어도 로컬 파일,
+직접 미디어 URL과 일반 웹사이트는 사용할 수 있지만 일부 YouTube 포맷이 제한되거나
+재생에 실패할 수 있습니다.
+
+macOS에서는 mpv를 다음 명령으로 설치할 수 있습니다.
 
 ```bash
-brew install mpv yt-dlp
+brew install mpv
 ```
+
+yt-dlp는 [공식 설치 안내](https://github.com/yt-dlp/yt-dlp/wiki/Installation)를
+따라 별도로 설치하세요. 패키지 관리자가 자체 정책으로 추가 runtime을 설치할 수
+있습니다. 예를 들어 현재 Homebrew의 yt-dlp formula는 Deno를 전이 의존성으로
+설치하므로, 이를 원하지 않으면 공식 standalone 실행 파일이나 PyPI 설치 방식을
+선택할 수 있습니다.
 
 ## 설치
 
@@ -32,12 +43,6 @@ git clone https://github.com/im-ian/pinplay.git
 cd pinplay
 ./scripts/install.sh
 pinplay doctor
-```
-
-의존성까지 한 번에 설치하려면 macOS에서 다음 옵션을 사용할 수 있습니다.
-
-```bash
-./scripts/install.sh --with-deps
 ```
 
 또는 Cargo 기본 경로에 설치할 수 있습니다.
@@ -112,7 +117,8 @@ pinplay doctor --json
 ```
 
 `--json` 출력은 패키지 설치 검사나 자동화에서 사용할 수 있는 버전이 지정된
-스키마를 제공합니다. `mpv` 또는 `yt-dlp`가 없으면 종료 코드 `3`을 반환합니다.
+스키마를 제공합니다. 스키마 버전 2는 Pinplay의 직접 의존성인 `mpv`와 `yt-dlp`만
+보고합니다. 둘 중 하나라도 없으면 종료 코드 `3`을 반환합니다.
 
 ## 설계와 안전성
 
@@ -136,6 +142,8 @@ Pinplay은 입력을 셸 명령 문자열로 합치지 않습니다. 검증된 �
 DRM, 지역 제한, 로그인 또는 쿠키가 필요한 콘텐츠는 보장하지 않습니다.
 Wayland에서는 compositor 정책 때문에 창 위치나 always-on-top 요청이 무시될 수
 있습니다. 실제 최소 리사이즈 크기도 운영체제와 창 관리자에 따라 달라집니다.
+JavaScript challenge를 사용하는 YouTube 포맷의 가용성은 사용자가 별도로 구성한
+yt-dlp runtime/provider에 따라 달라집니다.
 
 YouTube, mpv, yt-dlp와 공식 제휴한 프로젝트가 아닙니다. 접근 및 재생 권한이
 있는 콘텐츠에만 사용하세요.

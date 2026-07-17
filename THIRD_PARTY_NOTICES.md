@@ -16,14 +16,9 @@ linked into or bundled with the Pinplay binary.
 - License information: <https://github.com/yt-dlp/yt-dlp#license>
 - The source project is released into the public domain under The Unlicense.
   Prebuilt executables can include components under additional licenses.
-
-## Deno
-
-- Project: <https://deno.com/>
-- Source and license information: <https://github.com/denoland/deno>
-- Deno is optional. When available, its exact executable path is forwarded to
-  yt-dlp as the JavaScript runtime used for current YouTube extraction, and its
-  availability is included in `pinplay doctor` output.
+- Pinplay does not install, bundle, locate, or configure a JavaScript runtime.
+  Optional runtime and EJS components used for site-specific extraction remain
+  part of the user's yt-dlp environment and retain their own license terms.
 
 ## Rust crates
 

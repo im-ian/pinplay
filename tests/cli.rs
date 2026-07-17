@@ -78,17 +78,19 @@ fn doctor_is_an_offline_subcommand() {
 
 #[test]
 fn deno_is_not_a_pinplay_option() {
-    assert!(Cli::try_parse_from([
-        "pinplay",
-        "--mpv",
-        "/tools/mpv",
-        "--yt-dlp",
-        "/tools/yt-dlp",
-        "--deno",
-        "/tools/deno",
-        "https://example.test/video",
-    ])
-    .is_err());
+    assert!(
+        Cli::try_parse_from([
+            "pinplay",
+            "--mpv",
+            "/tools/mpv",
+            "--yt-dlp",
+            "/tools/yt-dlp",
+            "--deno",
+            "/tools/deno",
+            "https://example.test/video",
+        ])
+        .is_err()
+    );
 }
 
 #[test]
