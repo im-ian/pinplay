@@ -28,7 +28,6 @@ pub struct PlatformReport {
 pub struct CapabilityReport {
     pub local_playback: bool,
     pub web_playback: bool,
-    pub youtube_runtime: bool,
 }
 
 #[derive(Debug, Serialize)]
@@ -45,24 +44,16 @@ impl DoctorReport {
     pub fn inspect(request: &DoctorRequest) -> Self {
         let mpv = dependency(Tool::Mpv, request.mpv.as_deref(), true);
         let yt_dlp = dependency(Tool::YtDlp, request.yt_dlp.as_deref(), true);
-        let deno = dependency(Tool::Deno, request.deno.as_deref(), false);
         let local_playback = mpv.found;
         let web_playback = mpv.found && yt_dlp.found;
-        let youtube_runtime = web_playback && deno.found;
         let ready = local_playback && web_playback;
 
         let mut hints = Vec::new();
         if !mpv.found || !yt_dlp.found {
             hints.push(install_hint());
         }
-        if !deno.found {
-            hints.push(
-                "Install deno for the most complete current YouTube support in yt-dlp.".to_owned(),
-            );
-        }
-
         Self {
-            schema_version: 1,
+            schema_version: 2,
             ready,
             pinplay_version: env!("CARGO_PKG_VERSION"),
             platform: PlatformReport {
@@ -73,9 +64,8 @@ impl DoctorReport {
             capabilities: CapabilityReport {
                 local_playback,
                 web_playback,
-                youtube_runtime,
             },
-            dependencies: vec![mpv, yt_dlp, deno],
+            dependencies: vec![mpv, yt_dlp],
             hints,
         }
     }

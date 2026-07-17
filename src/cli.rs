@@ -29,10 +29,6 @@ pub struct Cli {
     /// Path to the yt-dlp executable
     #[arg(long = "yt-dlp", value_name = "PATH", global = true)]
     yt_dlp: Option<PathBuf>,
-
-    /// Path to a JavaScript runtime used by yt-dlp
-    #[arg(long, value_name = "PATH", global = true)]
-    deno: Option<PathBuf>,
 }
 
 impl Cli {
@@ -46,7 +42,6 @@ impl Cli {
                     json: arguments.json,
                     mpv: self.mpv,
                     yt_dlp: self.yt_dlp,
-                    deno: self.deno,
                 }))
             }
             None => {
@@ -78,7 +73,6 @@ impl Cli {
         RuntimePaths {
             mpv: self.mpv.clone(),
             yt_dlp: self.yt_dlp.clone(),
-            deno: self.deno.clone(),
         }
     }
 }
@@ -182,7 +176,6 @@ struct DoctorArgs {
 pub struct RuntimePaths {
     pub mpv: Option<PathBuf>,
     pub yt_dlp: Option<PathBuf>,
-    pub deno: Option<PathBuf>,
 }
 
 #[derive(Debug)]
@@ -196,7 +189,6 @@ pub struct DoctorRequest {
     pub json: bool,
     pub mpv: Option<PathBuf>,
     pub yt_dlp: Option<PathBuf>,
-    pub deno: Option<PathBuf>,
 }
 
 #[derive(Debug, Error)]

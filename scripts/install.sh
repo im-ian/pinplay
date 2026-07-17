@@ -2,29 +2,14 @@
 
 set -eu
 
-install_dependencies=false
-
-if [ "${1:-}" = "--with-deps" ]; then
-  install_dependencies=true
-  shift
-fi
-
 if [ "$#" -ne 0 ]; then
-  echo "usage: ./scripts/install.sh [--with-deps]" >&2
+  echo "usage: ./scripts/install.sh" >&2
   exit 2
 fi
 
 if ! command -v cargo >/dev/null 2>&1; then
   echo "pinplay: Rust and Cargo are required: https://rustup.rs" >&2
   exit 1
-fi
-
-if [ "$install_dependencies" = true ]; then
-  if ! command -v brew >/dev/null 2>&1; then
-    echo "pinplay: --with-deps currently requires Homebrew" >&2
-    exit 1
-  fi
-  brew install mpv yt-dlp
 fi
 
 script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
@@ -45,4 +30,3 @@ install -m 755 target/release/pinplay "$install_directory/pinplay"
 
 echo "Installed pinplay to $install_directory/pinplay"
 echo "Run: pinplay doctor"
-

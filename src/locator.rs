@@ -7,7 +7,6 @@ use thiserror::Error;
 pub enum Tool {
     Mpv,
     YtDlp,
-    Deno,
 }
 
 impl Tool {
@@ -16,7 +15,6 @@ impl Tool {
         match self {
             Self::Mpv => "mpv",
             Self::YtDlp => "yt-dlp",
-            Self::Deno => "deno",
         }
     }
 

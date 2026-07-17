@@ -18,16 +18,6 @@ pub struct MpvCommand {
 impl MpvCommand {
     #[must_use]
     pub fn new(program: PathBuf, request: PlaybackRequest, yt_dlp: Option<PathBuf>) -> Self {
-        Self::with_helpers(program, request, yt_dlp, None)
-    }
-
-    #[must_use]
-    pub fn with_helpers(
-        program: PathBuf,
-        request: PlaybackRequest,
-        yt_dlp: Option<PathBuf>,
-        deno: Option<PathBuf>,
-    ) -> Self {
         let options = &request.options;
         let mut args = vec![
             "--no-config".into(),
@@ -64,26 +54,19 @@ impl MpvCommand {
             option.push(path.as_os_str());
             args.push(option);
         }
-        if let Some(path) = &deno {
-            let mut option = OsString::from("--ytdl-raw-options-append=js-runtimes=deno:");
-            option.push(path.as_os_str());
-            args.push(option);
-        }
-
         #[cfg(target_os = "macos")]
         args.extend(["--focus-on=never".into(), "--on-all-workspaces".into()]);
 
         args.push("--".into());
         args.push(request.source.as_os_str().to_owned());
 
-        let mut extra_path_entries = [yt_dlp.as_deref(), deno.as_deref()]
-            .into_iter()
-            .flatten()
-            .filter_map(Path::parent)
+        let extra_path_entries = yt_dlp
+            .as_deref()
+            .and_then(Path::parent)
             .filter(|path| !path.as_os_str().is_empty())
             .map(Path::to_path_buf)
+            .into_iter()
             .collect::<Vec<_>>();
-        extra_path_entries.dedup();
 
         Self {
             program,
