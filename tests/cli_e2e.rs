@@ -109,6 +109,25 @@ fn doctor_rejects_a_binary_that_cannot_report_its_version() {
         .stdout(predicate::str::contains("\"found\": false"));
 }
 
+#[cfg(target_os = "macos")]
+#[test]
+fn doctor_does_not_recommend_a_homebrew_install_that_pulls_deno() {
+    Command::cargo_bin("pinplay")
+        .unwrap()
+        .args([
+            "--mpv",
+            "/definitely/missing/mpv",
+            "--yt-dlp",
+            "/definitely/missing/yt-dlp",
+            "doctor",
+        ])
+        .assert()
+        .code(3)
+        .stdout(predicate::str::contains("brew install mpv"))
+        .stdout(predicate::str::contains("yt-dlp/wiki/Installation"))
+        .stdout(predicate::str::contains("brew install mpv yt-dlp").not());
+}
+
 #[test]
 fn missing_player_has_an_actionable_error() {
     Command::cargo_bin("pinplay")
