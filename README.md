@@ -128,7 +128,9 @@ Pinplay은 입력을 셸 명령 문자열로 합치지 않습니다. 검증된 �
 
 - mpv/FFmpeg가 해석할 수 있는 로컬 파일과 직접 미디어 URL
 - 최신 yt-dlp가 지원하는 웹사이트 주소
-- macOS, Windows, X11 기반 Linux의 floating window 동작
+- macOS를 우선 지원합니다.
+- Windows와 X11 기반 Linux는 소스 빌드 및 CI 대상이며, 별도 설치 패키지는
+  아직 제공하지 않습니다.
 
 DRM, 지역 제한, 로그인 또는 쿠키가 필요한 콘텐츠는 보장하지 않습니다.
 Wayland에서는 compositor 정책 때문에 창 위치나 always-on-top 요청이 무시될 수

@@ -21,8 +21,17 @@ linked into or bundled with the Pinplay binary.
 
 - Project: <https://deno.com/>
 - Source and license information: <https://github.com/denoland/deno>
-- Deno is optional and is discovered only to report current YouTube runtime
-  readiness for yt-dlp.
+- Deno is optional. When available, its exact executable path is forwarded to
+  yt-dlp as the JavaScript runtime used for current YouTube extraction, and its
+  availability is included in `pinplay doctor` output.
+
+## Rust crates
+
+The Pinplay binary also contains Rust crates declared in `Cargo.toml` and pinned
+in `Cargo.lock`, including clap, serde, serde_json, thiserror, and their
+transitive dependencies. These projects are primarily available under MIT
+and/or Apache-2.0 terms; `Cargo.lock` is the authoritative version inventory.
+Anyone distributing prebuilt Pinplay binaries should generate and bundle a
+complete license inventory for the exact release artifact.
 
 All product names and trademarks belong to their respective owners.
-

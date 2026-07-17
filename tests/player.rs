@@ -103,7 +103,9 @@ fn helper_runtime_directories_are_added_to_the_child_path() {
             PathBuf::from("/opt/tools/js/bin")
         ]
     );
-    assert!(args_as_strings(&command).contains(
-        &"--ytdl-raw-options-append=js-runtimes=deno:/opt/tools/js/bin/deno".to_owned()
-    ));
+    assert!(
+        args_as_strings(&command).contains(
+            &"--ytdl-raw-options-append=js-runtimes=deno:/opt/tools/js/bin/deno".to_owned()
+        )
+    );
 }
