@@ -243,10 +243,10 @@ impl Source {
             return Ok(Self::Local(canonical));
         }
 
-        if let Some(text) = raw.to_str()
-            && is_protocol_url(text)
-        {
-            return Ok(Self::Remote(text.to_owned()));
+        if let Some(text) = raw.to_str() {
+            if is_protocol_url(text) {
+                return Ok(Self::Remote(text.to_owned()));
+            }
         }
 
         Err(SourceError::Missing(format!("{raw:?}")))
