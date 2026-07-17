@@ -28,6 +28,7 @@ brew install mpv yt-dlp
 Rust 1.85 이상이 설치되어 있다면 저장소에서 바로 설치할 수 있습니다.
 
 ```bash
+git clone https://github.com/im-ian/pinplay.git
 cd pinplay
 ./scripts/install.sh
 pinplay doctor
