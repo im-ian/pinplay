@@ -88,6 +88,31 @@ fn doctor_json_is_machine_readable_and_offline() {
 }
 
 #[test]
+fn doctor_rejects_a_binary_that_cannot_report_its_version() {
+    let directory = TempDir::new().unwrap();
+    let broken_mpv = fake_executable(&directory, "mpv", "exit 42");
+    let yt_dlp = fake_executable(&directory, "yt-dlp", "echo '2026.01.01'");
+    let deno = fake_executable(&directory, "deno", "echo 'deno 2.0'");
+
+    Command::cargo_bin("pinplay")
+        .unwrap()
+        .args([
+            "--mpv",
+            broken_mpv.to_str().unwrap(),
+            "--yt-dlp",
+            yt_dlp.to_str().unwrap(),
+            "--deno",
+            deno.to_str().unwrap(),
+            "doctor",
+            "--json",
+        ])
+        .assert()
+        .code(3)
+        .stdout(predicate::str::contains("\"ready\": false"))
+        .stdout(predicate::str::contains("\"found\": false"));
+}
+
+#[test]
 fn missing_player_has_an_actionable_error() {
     Command::cargo_bin("pinplay")
         .unwrap()

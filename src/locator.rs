@@ -120,3 +120,19 @@ fn canonical_or_original(path: PathBuf) -> PathBuf {
 pub struct LocateError {
     tool: Tool,
 }
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+
+    use super::has_safe_windows_executable_extension;
+
+    #[test]
+    fn windows_only_executes_native_exe_files() {
+        assert!(has_safe_windows_executable_extension(Path::new("mpv.exe")));
+        assert!(has_safe_windows_executable_extension(Path::new("MPV.EXE")));
+        assert!(!has_safe_windows_executable_extension(Path::new("mpv.cmd")));
+        assert!(!has_safe_windows_executable_extension(Path::new("mpv.bat")));
+        assert!(!has_safe_windows_executable_extension(Path::new("mpv")));
+    }
+}
