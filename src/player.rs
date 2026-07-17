@@ -64,6 +64,11 @@ impl MpvCommand {
             option.push(path.as_os_str());
             args.push(option);
         }
+        if let Some(path) = &deno {
+            let mut option = OsString::from("--ytdl-raw-options-append=js-runtimes=deno:");
+            option.push(path.as_os_str());
+            args.push(option);
+        }
 
         #[cfg(target_os = "macos")]
         args.extend(["--focus-on=never".into(), "--on-all-workspaces".into()]);
