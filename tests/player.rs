@@ -71,9 +71,11 @@ fn requested_playback_controls_map_to_mpv_without_shell_text() {
     assert!(args.contains(&"--loop-file=inf".to_owned()));
     assert!(args.contains(&"--border=yes".to_owned()));
     assert!(args.contains(&"--osc=yes".to_owned()));
-    assert!(args.contains(
-        &"--script-opts-append=ytdl_hook-ytdl_path=/opt/homebrew/bin/yt-dlp".to_owned()
-    ));
+    assert!(
+        args.contains(
+            &"--script-opts-append=ytdl_hook-ytdl_path=/opt/homebrew/bin/yt-dlp".to_owned()
+        )
+    );
     assert_eq!(&args[args.len() - 2..], ["--", source]);
     assert_eq!(
         command.extra_path_entries(),
@@ -101,4 +103,7 @@ fn helper_runtime_directories_are_added_to_the_child_path() {
             PathBuf::from("/opt/tools/js/bin")
         ]
     );
+    assert!(args_as_strings(&command).contains(
+        &"--ytdl-raw-options-append=js-runtimes=deno:/opt/tools/js/bin/deno".to_owned()
+    ));
 }
