@@ -9,10 +9,13 @@
 4. As a viewer, I want to set the start time, mute state, playback speed, volume,
    and loop behavior from the command line so playback starts exactly as wanted.
 5. As a user setting up Pinplay, I want an offline `doctor` command that explains
-   whether mpv, yt-dlp, and a JavaScript runtime are available.
+   whether the two programs Pinplay directly depends on, mpv and yt-dlp, are
+   available.
 6. As a security-conscious user, I want URLs and filenames to be passed as
    process arguments rather than shell text so an unusual source cannot execute
    another command.
+7. As a user, I want Pinplay to avoid managing a specific JavaScript runtime so
+   yt-dlp remains responsible for any optional site-specific runtime setup.
 
 ## MVP acceptance criteria
 
@@ -27,4 +30,5 @@
 - Pinplay never invokes a shell. It inserts mpv's `--` delimiter before the exact
   source argument.
 - `doctor --json` is deterministic and suitable for package-manager smoke tests.
-
+- `doctor --json` schema version 2 reports only Pinplay's direct dependencies and
+  contains no Deno- or JavaScript-runtime-specific fields.

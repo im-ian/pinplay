@@ -77,8 +77,8 @@ fn doctor_is_an_offline_subcommand() {
 }
 
 #[test]
-fn runtime_paths_include_the_javascript_runtime() {
-    let cli = Cli::try_parse_from([
+fn deno_is_not_a_pinplay_option() {
+    assert!(Cli::try_parse_from([
         "pinplay",
         "--mpv",
         "/tools/mpv",
@@ -88,12 +88,7 @@ fn runtime_paths_include_the_javascript_runtime() {
         "/tools/deno",
         "https://example.test/video",
     ])
-    .unwrap();
-
-    let paths = cli.runtime_paths();
-    assert_eq!(paths.mpv, Some(PathBuf::from("/tools/mpv")));
-    assert_eq!(paths.yt_dlp, Some(PathBuf::from("/tools/yt-dlp")));
-    assert_eq!(paths.deno, Some(PathBuf::from("/tools/deno")));
+    .is_err());
 }
 
 #[test]

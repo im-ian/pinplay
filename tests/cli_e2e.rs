@@ -26,6 +26,7 @@ fn help_describes_the_direct_source_syntax() {
         .stdout(predicate::str::contains("pinplay [OPTIONS] [SOURCE]"))
         .stdout(predicate::str::contains("--start"))
         .stdout(predicate::str::contains("--size"))
+        .stdout(predicate::str::contains("--deno").not())
         .stdout(predicate::str::contains("doctor"));
 }
 
@@ -65,7 +66,6 @@ fn doctor_json_is_machine_readable_and_offline() {
     let directory = TempDir::new().unwrap();
     let mpv = fake_executable(&directory, "mpv", "echo 'mpv 1.0'");
     let yt_dlp = fake_executable(&directory, "yt-dlp", "echo '2026.01.01'");
-    let deno = fake_executable(&directory, "deno", "echo 'deno 2.0'");
 
     Command::cargo_bin("pinplay")
         .unwrap()
@@ -74,17 +74,17 @@ fn doctor_json_is_machine_readable_and_offline() {
             mpv.to_str().unwrap(),
             "--yt-dlp",
             yt_dlp.to_str().unwrap(),
-            "--deno",
-            deno.to_str().unwrap(),
             "doctor",
             "--json",
         ])
         .assert()
         .success()
+        .stdout(predicate::str::contains("\"schema_version\": 2"))
         .stdout(predicate::str::contains("\"ready\": true"))
         .stdout(predicate::str::contains("\"name\": \"mpv\""))
         .stdout(predicate::str::contains("\"name\": \"yt-dlp\""))
-        .stdout(predicate::str::contains("\"name\": \"deno\""));
+        .stdout(predicate::str::contains("\"name\": \"deno\"").not())
+        .stdout(predicate::str::contains("\"youtube_runtime\"").not());
 }
 
 #[test]
@@ -92,7 +92,6 @@ fn doctor_rejects_a_binary_that_cannot_report_its_version() {
     let directory = TempDir::new().unwrap();
     let broken_mpv = fake_executable(&directory, "mpv", "exit 42");
     let yt_dlp = fake_executable(&directory, "yt-dlp", "echo '2026.01.01'");
-    let deno = fake_executable(&directory, "deno", "echo 'deno 2.0'");
 
     Command::cargo_bin("pinplay")
         .unwrap()
@@ -101,8 +100,6 @@ fn doctor_rejects_a_binary_that_cannot_report_its_version() {
             broken_mpv.to_str().unwrap(),
             "--yt-dlp",
             yt_dlp.to_str().unwrap(),
-            "--deno",
-            deno.to_str().unwrap(),
             "doctor",
             "--json",
         ])
