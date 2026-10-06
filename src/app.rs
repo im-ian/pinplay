@@ -4,7 +4,7 @@ use thiserror::Error;
 use crate::cli::{Action, Cli, CliError};
 use crate::doctor::DoctorReport;
 use crate::locator::{LocateError, Tool, locate, require};
-use crate::player::{MpvCommand, PlayerError};
+use crate::player::{self, MpvCommand, PlayerError};
 
 pub fn run_from_env() -> Result<u8, AppError> {
     run(Cli::parse())
@@ -22,7 +22,9 @@ pub fn run(cli: Cli) -> Result<u8, AppError> {
             };
             let detach = request.options.detach;
             let dry_run = request.options.dry_run;
-            let command = MpvCommand::new(mpv, request, yt_dlp);
+            let controls = player::install_controls_script()?;
+            let mpv = player::named_player_executable(&mpv)?;
+            let command = MpvCommand::new(mpv, request, yt_dlp, &controls);
             if dry_run {
                 println!("{}", command.display());
                 Ok(0)
