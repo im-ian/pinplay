@@ -92,4 +92,8 @@ fn geometry_matches_each_supported_corner() {
     assert_eq!(Position::TopRight.geometry(size, 24), "320x180-24+24");
     assert_eq!(Position::BottomLeft.geometry(size, 24), "320x180+24-24");
     assert_eq!(Position::BottomRight.geometry(size, 24), "320x180-24-24");
+    assert_eq!(Position::TopLeft.as_str(), "top-left");
+    assert_eq!(Position::TopRight.as_str(), "top-right");
+    assert_eq!(Position::BottomLeft.as_str(), "bottom-left");
+    assert_eq!(Position::BottomRight.as_str(), "bottom-right");
 }

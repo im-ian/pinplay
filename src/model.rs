@@ -88,6 +88,16 @@ pub enum Position {
 
 impl Position {
     #[must_use]
+    pub const fn as_str(self) -> &'static str {
+        match self {
+            Self::TopLeft => "top-left",
+            Self::TopRight => "top-right",
+            Self::BottomLeft => "bottom-left",
+            Self::BottomRight => "bottom-right",
+        }
+    }
+
+    #[must_use]
     pub fn geometry(self, size: Size, margin: u16) -> String {
         let offset = match self {
             Self::TopLeft => format!("+{margin}+{margin}"),

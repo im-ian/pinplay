@@ -16,6 +16,11 @@
    another command.
 7. As a user, I want Pinplay to avoid managing a specific JavaScript runtime so
    yt-dlp remains responsible for any optional site-specific runtime setup.
+8. As a viewer, I want to click the picture to pause or resume, and right-click
+   it to pause, mute, resize, or close the window, without leaving the video.
+   Dragging or resizing the window keeps the current playback state.
+9. As a macOS viewer, I want the Dock and menu bar to show pinplay rather than
+   the mpv executable name.
 
 ## MVP acceptance criteria
 
